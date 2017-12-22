@@ -1,4 +1,4 @@
-package com.manachain.io;
+package com.wozaizhao;
 
 import org.knowm.xchange.currency.CurrencyPair;
 
