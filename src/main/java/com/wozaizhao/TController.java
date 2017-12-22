@@ -19,7 +19,7 @@ public class TController {
     }
 
     @RequestMapping(path="/all")
-    public @ResponseBody Iterable<tTicker> getAllTicker() {
+    public @ResponseBody Iterable<binanceTicker> getAllTicker() {
         return ttickerRepository.findAll();
     }
 }

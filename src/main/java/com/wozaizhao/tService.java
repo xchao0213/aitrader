@@ -1,5 +1,7 @@
 package com.wozaizhao;
 
+import org.knowm.xchange.bitstamp.dto.marketdata.BitstampTicker;
+import org.knowm.xchange.bitstamp.service.BitstampMarketDataServiceRaw;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,12 +30,11 @@ public class tService {
 
     MarketDataService marketDataService = exchange.getMarketDataService();
 
-
     private static void generic(MarketDataService marketDataService, tTickerRepository ttickerRepository) throws IOException {
         Ticker ticker = marketDataService.getTicker(CurrencyPair.BTC_USD);
         System.out.println(ticker.toString());
 
-        tTicker tt = new tTicker();
+        binanceTicker tt = new binanceTicker();
         tt.setCurrencyPair(ticker.getCurrencyPair().toString());
         tt.setOpen(ticker.getOpen());
         tt.setLast(ticker.getLast());
@@ -41,6 +42,7 @@ public class tService {
         tt.setAsk(ticker.getAsk());
         tt.setHigh(ticker.getHigh());
         tt.setLow(ticker.getLow());
+        tt.setVwap(ticker.getVwap());
         tt.setVolume(ticker.getVolume());
         tt.setQuoteVolume(ticker.getQuoteVolume());
         tt.setTimestamp(ticker.getTimestamp());
@@ -48,9 +50,15 @@ public class tService {
         ttickerRepository.save(tt);
     }
 
-    @Scheduled(fixedRate = 5000)
+    private static void raw(BitstampMarketDataServiceRaw marketDataService) throws IOException {
+        BitstampTicker bitstampTicker = marketDataService.getBitstampTicker(CurrencyPair.BTC_USD);
+        System.out.println(bitstampTicker.toString());
+    }
+
+    @Scheduled(fixedRate = 6000)
     public void getTicker() throws IOException {
         generic(marketDataService, ttickerRepository);
+//        raw((BitstampMarketDataServiceRaw) marketDataService);
 
     }
 
